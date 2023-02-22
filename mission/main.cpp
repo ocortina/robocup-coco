@@ -69,9 +69,9 @@ bool setup(int argc, char **argv)
   return true;
 }
 
-void step1()
+void ramp()
 {
-  sound.say(". Step one.", 0.3);
+  sound.say(". Ramp mission.", 0.3);
   // remove old mission
   bridge.tx("regbot mclear\n");
   // clear events received from last mission
@@ -96,7 +96,7 @@ int main(int argc, char **argv)
   { // start mission
     std::cout << "# Robobot mission starting ...\n";
     //
-    step1();
+    ramp();
     //
     std::cout << "# Robobot mission finished ...\n";
     // remember to close camera
