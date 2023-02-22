@@ -77,9 +77,8 @@ void step1()
   // clear events received from last mission
   event.clearEvents();
   // add mission lines
-  bridge.tx("regbot madd vel=0.2:time=1\n");
-  bridge.tx("regbot madd tr=0.1:time=1,turn=-90\n");
-  bridge.tx("regbot madd :time=1\n");
+  bridge.tx("regbot madd vel=0.2, edgel=0, white=1: xl > 16, dist=2\n"); //follow white line until crossing line or for 2 m
+  bridge.tx("regbot madd tr=0.1:time=1,turn=-90\n"); //turn 90 deg
   // start this mission
   bridge.tx("regbot start\n");
   // wait until finished
@@ -89,45 +88,7 @@ void step1()
 //   sound.say(". Step one finished.");
 }
 
-void step2()
-{
-//   sound.say(". Step two. Press button two for right, button three for left", 0.3);
-  bool go_left = true;
-  while (true)
-  { // wait for decision (button 2 (right) or 3 (left))
-    if (joy.button(2))
-    {
-      go_left = false;
-      sound.say(". OK. Going right.", 0.3);
-      break;
-    }
-    else if (joy.button(3))
-    {
-      go_left = true;
-      sound.say(". OK. Going left.", 0.3);
-      break;
-    }
-    else // wait
-      usleep(5000);
-  }
-  // remove old mission
-  bridge.tx("regbot mclear\n");
-  // clear events received from last mission
-  event.clearEvents();
-  // add mission lines
-  if (go_left)
-    bridge.tx("regbot madd vel=0.2,tr=0.1:turn=90\n");
-  else
-    bridge.tx("regbot madd vel=0.2,tr=0.1:turn=-90\n");
-  // drive a bit straight for correct end heading
-  bridge.tx("regbot madd :dist=0.2\n"); 
-  // start this mission
-  bridge.tx("regbot start\n");
-  // wait until finished
-  cout << "Waiting for step 1 to finish (event 0 is send, when mission is finished)\n";
-  event.waitForEvent(0);
-  sound.say(". Step two finished.");
-}
+
 
 int main(int argc, char **argv) 
 {
@@ -136,7 +97,6 @@ int main(int argc, char **argv)
     std::cout << "# Robobot mission starting ...\n";
     //
     step1();
-    step2();
     //
     std::cout << "# Robobot mission finished ...\n";
     // remember to close camera
