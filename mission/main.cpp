@@ -129,15 +129,34 @@ void step2()
   sound.say(". Step two finished.");
 }
 
+void startTask() {
+  bridge.tx("regbot mclear\n");
+  bridge.tx("regbot madd vel=0.5,acc=1,edger=0,white=1:dist=3\n");
+  bridge.tx("regbot madd vel=0.5,acc=1,edger=0,white=1:dist=5, tilt > 0.05\n");
+  bridge.tx("regbot madd vel=0.0:time=0.1\n");
+  bridge.tx("regbot start\n");
+  event.waitForEvent(0);
+}
+
+void recordVideoToTest() {
+  bridge.tx("regbot mclear\n");
+  bridge.tx("regbot madd vel=0.1:dist=1\n");
+  bridge.tx("regbot start\n");
+  vision.processImage(5);
+  event.waitForEvent(0);
+}
+
 int main(int argc, char **argv) 
 {
   if (setup(argc, argv))
   { // start mission
     std::cout << "# Robobot mission starting ...\n";
     //
-    step1();
-    step2();
+    //step1();
+    //step2();
     //
+    startTask();
+    //recordVideoToTest();
     std::cout << "# Robobot mission finished ...\n";
     // remember to close camera
     vision.stop();
