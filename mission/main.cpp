@@ -76,7 +76,7 @@ void rampTask()
   bridge.tx("regbot mclear\n");
   //event.clearEvents();
   // Follow line to seesaw and go down the seesaw
-  bridge.tx("regbot madd vel=0.3, edgel=1, white=1: xl > 15\n"); 
+  bridge.tx("regbot madd vel=0.3,  edgel=1, white=1: xl > 15\n"); 
   bridge.tx("regbot madd vel=0.1: dist=0.20\n"); 
   bridge.tx("regbot madd vel=-0.1, tr=0.1: turn=90\n"); 
   bridge.tx("regbot madd vel=0.2, edgel=0, white=1: dist=0.5\n");
@@ -110,13 +110,13 @@ void axeTask()
   sound.say(". Ramp mission.", 0.3);
   // remove old mission and clear events
   bridge.tx("regbot mclear\n");
-  event.clearEvents();
-  bridge.tx("regbot madd vel=0.0 : ir2 > 0.5, time = 1\n"); //wait for free passage
-  bridge.tx("regbot madd vel=0.3,acc=1,white=1:xl > 15, dist=1.5\n"); //fwd until crossing line 
+  //event.clearEvents();
+  bridge.tx("regbot madd vel=0.0 : ir2 > 0.3\n"); //check for free passage
+  bridge.tx("regbot madd : time=1\n"); //wait a little
+  bridge.tx("regbot madd vel=1, acc=3, edgel=0, white=1: xl > 15\n"); //fwd until crossing line 
   bridge.tx("regbot start\n"); // start this mission
   event.waitForEvent(0); // wait until finished
 }
-
 
 
 int main(int argc, char **argv) 
