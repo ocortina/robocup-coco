@@ -69,23 +69,47 @@ bool setup(int argc, char **argv)
   return true;
 }
 
-void ramp()
+void rampTask()
 {
   sound.say(". Ramp mission.", 0.3);
-  // remove old mission
+  // remove old mission and clear events
   bridge.tx("regbot mclear\n");
-  // clear events received from last mission
   event.clearEvents();
-  // add mission lines
-  bridge.tx("regbot madd vel=0.2, edgel=0, white=1: xl > 16, dist=2\n"); //follow white line until crossing line or for 2 m
-  bridge.tx("regbot madd tr=0.1:time=1,turn=-90\n"); //turn 90 deg
-  // start this mission
-  bridge.tx("regbot start\n");
-  // wait until finished
-  //
-  cout << "Waiting for step 1 to finish (event 0 is send, when mission is finished)\n";
-  event.waitForEvent(0);
-//   sound.say(". Step one finished.");
+  bridge.tx("regbot madd vel=0.3, edgel=1, white=1: xl > 15\n"); //follow white line until crossing line by seesaw
+  bridge.tx("regbot madd vel=0.1: dist=0.20\n"); //turn 90 deg
+  bridge.tx("regbot madd vel=-0.1, tr=0.1: turn=90\n"); //fwd onto seesaw
+  bridge.tx("regbot madd vel=0.2, edgel=0, white=1: dist=0.5\n"); //fwd to tilt
+  bridge.tx("regbot madd vel=0.2, edgel=0, white=1: xl > 15\n"); //down and find crossing line
+  bridge.tx("regbot madd vel=0.3, tr=0.1: turn=90, time=2.0\n"); //
+  bridge.tx("regbot madd vel=0.3, edger=1,  white=1: xl > 15\n"); //
+  bridge.tx("regbot madd vel=0.3: dist=0.10\n"); //
+  bridge.tx("regbot madd vel=0.3, edger=1,  white=1: xl > 15\n"); //
+  bridge.tx("regbot madd vel=0.3: dist=0.10\n"); //
+  bridge.tx("regbot madd vel=0.3, edger=0,  white=1: dist = 0.5\n"); //
+  bridge.tx("regbot madd vel=0.3: dist=1\n"); //
+  bridge.tx("regbot madd vel=0.2, tr=0.1: turn=90\n"); //
+  bridge.tx("regbot madd vel=0.3: dist=1\n"); //
+  bridge.tx("regbot madd vel=0.2, tr=0.1: turn=-90\n"); //
+  bridge.tx("regbot madd vel=0.3, white=1: xl > 15\n"); //
+  bridge.tx("regbot madd vel=0.2, tr=0.1: turn=90\n"); //
+  bridge.tx("regbot madd vel=0.3, edgel=1,  white=1: xl > 15\n"); //
+  bridge.tx("regbot madd vel=0.1: dist=0.10\n"); //
+  bridge.tx("regbot madd vel=0.3, edgel=0,  white=1: dist=1\n"); //
+  bridge.tx("regbot start\n"); // start this mission
+  event.waitForEvent(0); // wait until finished
+}
+
+
+void axeTask()
+{
+  sound.say(". Ramp mission.", 0.3);
+  // remove old mission and clear events
+  bridge.tx("regbot mclear\n");
+  event.clearEvents();
+  bridge.tx("regbot madd vel=0.0 : ir2 > 0.5, time = 1\n"); //wait for free passage
+  bridge.tx("regbot madd vel=0.3,acc=1,white=1:xl > 15, dist=1.5\n"); //fwd until crossing line 
+  bridge.tx("regbot start\n"); // start this mission
+  event.waitForEvent(0); // wait until finished
 }
 
 
@@ -95,9 +119,10 @@ int main(int argc, char **argv)
   if (setup(argc, argv))
   { // start mission
     std::cout << "# Robobot mission starting ...\n";
-    //
-    ramp();
-    //
+    
+    rampTask();
+    //axeTask();
+    
     std::cout << "# Robobot mission finished ...\n";
     // remember to close camera
     vision.stop();
