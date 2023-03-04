@@ -75,26 +75,30 @@ void rampTask()
   // remove old mission and clear events
   bridge.tx("regbot mclear\n");
   event.clearEvents();
-  bridge.tx("regbot madd vel=0.3, edgel=1, white=1: xl > 15\n"); //follow white line until crossing line by seesaw
-  bridge.tx("regbot madd vel=0.1: dist=0.20\n"); //turn 90 deg
-  bridge.tx("regbot madd vel=-0.1, tr=0.1: turn=90\n"); //fwd onto seesaw
-  bridge.tx("regbot madd vel=0.2, edgel=0, white=1: dist=0.5\n"); //fwd to tilt
-  bridge.tx("regbot madd vel=0.2, edgel=0, white=1: xl > 15\n"); //down and find crossing line
-  bridge.tx("regbot madd vel=0.3, tr=0.1: turn=90, time=2.0\n"); //
-  bridge.tx("regbot madd vel=0.3, edger=1,  white=1: xl > 15\n"); //
-  bridge.tx("regbot madd vel=0.3: dist=0.10\n"); //
-  bridge.tx("regbot madd vel=0.3, edger=1,  white=1: xl > 15\n"); //
-  bridge.tx("regbot madd vel=0.3: dist=0.10\n"); //
-  bridge.tx("regbot madd vel=0.3, edger=0,  white=1: dist = 0.5\n"); //
-  bridge.tx("regbot madd vel=0.3: dist=1\n"); //
-  bridge.tx("regbot madd vel=0.2, tr=0.1: turn=90\n"); //
-  bridge.tx("regbot madd vel=0.3: dist=1\n"); //
-  bridge.tx("regbot madd vel=0.2, tr=0.1: turn=-90\n"); //
-  bridge.tx("regbot madd vel=0.3, white=1: xl > 15\n"); //
-  bridge.tx("regbot madd vel=0.2, tr=0.1: turn=90\n"); //
-  bridge.tx("regbot madd vel=0.3, edgel=1,  white=1: xl > 15\n"); //
-  bridge.tx("regbot madd vel=0.1: dist=0.10\n"); //
-  bridge.tx("regbot madd vel=0.3, edgel=0,  white=1: dist=1\n"); //
+  // Follow line to seesaw and go down the seesaw
+  bridge.tx("regbot madd vel=0.3, edgel=1, white=1: xl > 15\n"); 
+  bridge.tx("regbot madd vel=0.1: dist=0.20\n"); 
+  bridge.tx("regbot madd vel=-0.1, tr=0.1: turn=90\n"); 
+  bridge.tx("regbot madd vel=0.2, edgel=0, white=1: dist=0.5\n");
+  bridge.tx("regbot madd vel=0.2, edgel=0, white=1: xl > 15\n"); 
+  bridge.tx("regbot madd vel=0.3, tr=0.1: turn=90, time=2.0\n"); 
+  // Make sure to pass the two lines
+  bridge.tx("regbot madd vel=0.3, edger=1,  white=1: xl > 15\n");
+  bridge.tx("regbot madd vel=0.3: dist=0.10\n"); 
+  bridge.tx("regbot madd vel=0.3, edger=1,  white=1: xl > 15\n"); 
+  bridge.tx("regbot madd vel=0.3: dist=0.10\n"); 
+  bridge.tx("regbot madd vel=0.3, edger=0,  white=1: dist = 0.5\n"); 
+  // Find way back to line for ramp
+  bridge.tx("regbot madd vel=0.3: dist=1\n"); 
+  bridge.tx("regbot madd vel=0.2, tr=0.1: turn=90\n"); 
+  bridge.tx("regbot madd vel=0.3: dist=1\n"); 
+  bridge.tx("regbot madd vel=0.2, tr=0.1: turn=-90\n"); 
+  bridge.tx("regbot madd vel=0.3, white=1: xl > 15\n"); 
+  bridge.tx("regbot madd vel=0.2, tr=0.1: turn=90\n"); 
+  // Go to top of the ramp
+  bridge.tx("regbot madd vel=0.3, edgel=1,  white=1: xl > 15\n"); 
+  bridge.tx("regbot madd vel=0.1: dist=0.10\n"); 
+  bridge.tx("regbot madd vel=0.3, edgel=0,  white=1: dist=1\n"); 
   bridge.tx("regbot start\n"); // start this mission
   event.waitForEvent(0); // wait until finished
 }
